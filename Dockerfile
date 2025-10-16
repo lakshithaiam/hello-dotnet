@@ -10,5 +10,6 @@ WORKDIR /app
 COPY --from=build /out .
 
 ENV ASPNETCORE_URLS=http://+:8083
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 
 ENTRYPOINT ["dotnet", "app.dll"]
