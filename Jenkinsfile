@@ -67,11 +67,28 @@ spec:
             steps {
                 container('dotnet') {
                     sh '''
+                        # Install SonarScanner for .NET
                         dotnet tool install --global dotnet-sonarscanner
+                        
+                        
+        
+                        # Add dotnet tools to PATH for this session
+                        export PATH="$PATH:$HOME/.dotnet/tools"
+                        
+                        cd app
+        
+                        # Begin analysis
                         dotnet sonarscanner begin /k:"hello-dotnet" \
-                                                /d:sonar.host.url="http://my-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000" \
-                                                /d:sonar.token="sqp_ebbcac7eeddd9ae912f12fda6db3731b8e8ac69a"
-                        dotnet sonarscanner end /d:sonar.token="sqp_ebbcac7eeddd9ae912f12fda6db3731b8e8ac69a"
+                                                 /d:sonar.host.url="http://my-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000" \
+                                                 /d:sonar.token="sqp_5690489e713bf1fdb550c6e5de75f4ee6da4440a"
+        
+                        
+        
+                        # Build the project
+                        dotnet build
+        
+                        # End analysis
+                        dotnet sonarscanner end /d:sonar.token="sqp_5690489e713bf1fdb550c6e5de75f4ee6da4440a"
                     '''
                 }
             }
