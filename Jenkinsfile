@@ -66,7 +66,13 @@ spec:
         stage('SonarQube Analysis') {
             steps {
                 container('dotnet') {
-                    sh 'dotnet tool install --global dotnet-sonarscanner'
+                    sh '''
+                        dotnet tool install --global dotnet-sonarscanner
+                        dotnet sonarscanner begin /k:"hello-dotnet" \
+                                                /d:sonar.host.url="http://my-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000" \
+                                                /d:sonar.token="sqp_ebbcac7eeddd9ae912f12fda6db3731b8e8ac69a"
+                        dotnet sonarscanner end /d:sonar.token="sqp_ebbcac7eeddd9ae912f12fda6db3731b8e8ac69a"
+                    '''
                 }
             }
         }
