@@ -6,6 +6,11 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
+  - name: dotnet
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    command:
+    - cat
+    tty: true  
   - name: sonar-scanner
     image: sonarsource/sonar-scanner-cli
     command:
@@ -60,7 +65,8 @@ spec:
         }
         stage('SonarQube Analysis') {
             steps {
-                container('sonar-scanner') {
+                container('dotnet') {
+                    sh 'dotnet tool install --global dotnet-sonarscanner'
                 }
             }
         }
@@ -97,5 +103,6 @@ spec:
                 }
             }
         }
+        
     }
 }
